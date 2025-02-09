@@ -1,12 +1,4 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { UserWarning } from './UserWarning';
 import { createTodo, deleteTodo, updateTodo, USER_ID } from './api/todos';
 import { getTodos } from './api/todos';
@@ -17,7 +9,8 @@ import { Header } from './components/Header/Header';
 import { TodoList } from './components/TodoList/TodoList';
 import { Footer } from './components/Footer/Footer';
 import { Todo } from './types/Todo';
-import { ErrorNotification } from './components/ErrorNotification';
+// eslint-disable-next-line max-len
+import { ErrorNotification } from './components/ErrorNotification/ErrorNotification';
 import { ErrorMessage } from './types/ErrorMessage';
 
 export const App: React.FC = () => {
@@ -30,7 +23,6 @@ export const App: React.FC = () => {
   const [processings, setProcessings] = useState<number[]>([]);
   const [isTodoLoading, setIsTodoLoading] = useState(false);
   const [isTodoDeleting, setIsTodoDeleting] = useState(false);
-  const [creatingTodo, setCreatingTodo] = useState(false);
   const [loadingTodoId, setLoadingTodoId] = useState<number | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -42,8 +34,6 @@ export const App: React.FC = () => {
 
         return;
       }
-
-      setCreatingTodo(true);
 
       setTempTodo({
         id: 0,
@@ -67,7 +57,6 @@ export const App: React.FC = () => {
 
         throw err;
       } finally {
-        setCreatingTodo(false);
         inputRef?.current?.focus();
         setTempTodo(null);
       }
@@ -94,10 +83,6 @@ export const App: React.FC = () => {
       );
   };
 
-  //const completedTodos = todos.filter(todo => todo.completed);
-  //const onDeleteAllCompleted = () => {
-  // completedTodos.forEach(todo => onDelete(todo.id));
-  //};
   const onDeleteAllCompleted = async () => {
     if (isTodoLoading) {
       return;
@@ -189,7 +174,6 @@ export const App: React.FC = () => {
     }
 
     const areAllCompleted = todos.every(todo => todo.completed);
-    //const newCompletedStatus = !areAllCompleted;
 
     const todosToUpdate = todos.filter(
       todo => todo.completed !== !areAllCompleted,
@@ -218,15 +202,11 @@ export const App: React.FC = () => {
   };
 
   const editTodo = async (todoId: number, newTitle: string) => {
-    //setLoadingTodoId(todoId);
-
     setTodos(currentTodos =>
       currentTodos.map(todo =>
         todo.id === todoId ? { ...todo, title: newTitle } : todo,
       ),
     );
-
-    //setLoadingTodoId(null);
   };
 
   return (
@@ -250,7 +230,6 @@ export const App: React.FC = () => {
           onDelete={onDelete}
           isTodoLoading={isTodoLoading}
           isTodoDeleting={isTodoDeleting}
-          creatingTodo={creatingTodo}
           processings={processings}
           toggleTodoStatus={toggleTodoStatus}
           editTodo={editTodo}

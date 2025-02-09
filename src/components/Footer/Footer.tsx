@@ -13,10 +13,6 @@ type Props = {
 export const Footer: React.FC<Props> = props => {
   const { filterField, setFilteredField, todos, onDeleteAllCompleted } = props;
   const activeTodosCount = todos.filter(todo => !todo.completed).length;
-  // const activeCount = todos.reduce(
-  //   (count, todo) => (!todo.completed && todo.id > 0 ? count + 1 : count),
-  //   0,
-  // );
 
   return (
     <footer className="todoapp__footer" data-cy="Footer">

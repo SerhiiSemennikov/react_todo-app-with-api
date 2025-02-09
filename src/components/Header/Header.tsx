@@ -51,8 +51,6 @@ export const Header: React.FC<Props> = props => {
     try {
       await onAdd(title);
     } catch (Error) {
-      //setErrorMessage(ErrorMessage.EmptyTitle);
-
       throw Error;
     } finally {
       setTitle('');
@@ -61,18 +59,20 @@ export const Header: React.FC<Props> = props => {
 
   return (
     <header className="todoapp__header">
-      <button
-        type="button"
-        className={cn('todoapp__toggle-all', { active: allTodoCompleted })}
-        data-cy="ToggleAllButton"
-        onClick={toggleAllTodos}
-      />
+      {todos.length > 0 && (
+        <button
+          type="button"
+          className={cn('todoapp__toggle-all', { active: allTodoCompleted })}
+          data-cy="ToggleAllButton"
+          onClick={toggleAllTodos}
+        />
+      )}
       <form onSubmit={handleSubmit}>
         <input
           data-cy="NewTodoField"
           type="text"
           className="todoapp__new-todo"
-          placeholder="What needs to be done?" //{isTodoLoading ? `...loading` : `What needs to be done?`}
+          placeholder="What needs to be done?"
           value={title}
           onChange={event => setTitle(event.target.value)}
           disabled={isInputDisabled || isTodoLoading}

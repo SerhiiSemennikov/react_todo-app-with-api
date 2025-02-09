@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ErrorMessage } from '../../types/ErrorMessage';
 
 type Props = {
   errorMessage: ErrorMessage;
-  //setErrorMessage: Dispatch<SetStateAction<ErrorMessage>>;
   setErrorMessage: (errorMessage: ErrorMessage) => void;
 };
 

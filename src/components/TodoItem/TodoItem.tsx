@@ -8,7 +8,7 @@ import { ErrorMessage } from '../../types/ErrorMessage';
 type Props = {
   todo: Todo;
   tempTodo: Todo | null;
-  creatingTodo: boolean;
+  //creatingTodo: boolean;
   onDelete: (id: number) => void;
   isTodoLoading: boolean;
   isTodoDeleting: boolean;
@@ -22,8 +22,8 @@ type Props = {
 export const TodoItem: React.FC<Props> = props => {
   const {
     todo,
-    tempTodo,
-    creatingTodo,
+    //tempTodo,
+    //creatingTodo,
     onDelete,
     isTodoLoading,
     isTodoDeleting,
@@ -127,11 +127,6 @@ export const TodoItem: React.FC<Props> = props => {
             onDoubleClick={handleDoubleClick}
           >
             {todo.title}
-            {/*isCreating && `  creating...`*/}
-            {/*isProcessed && `  deleting...`*/}
-            {/*isUpdating && `  updating...`*/}
-            {/*isTodoLoading && `  changing...`*/}
-            {/*loadingTodoId === todo.id && `  changing status...`*/}
           </span>
 
           <button

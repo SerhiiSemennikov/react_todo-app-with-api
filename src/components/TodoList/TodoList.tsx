@@ -12,7 +12,6 @@ type Props = {
   processings: number[];
   isTodoLoading: boolean;
   isTodoDeleting: boolean;
-  creatingTodo: boolean;
   toggleTodoStatus: (id: number, completed: boolean) => void;
   editTodo: (todoId: number, newTitle: string) => void;
   setErrorMessage: (error: ErrorMessage) => void;
@@ -26,7 +25,6 @@ export const TodoList: React.FC<Props> = props => {
     onDelete,
     isTodoLoading,
     isTodoDeleting,
-    creatingTodo,
     processings,
     toggleTodoStatus,
     editTodo,
@@ -56,7 +54,7 @@ export const TodoList: React.FC<Props> = props => {
             </CSSTransition>
           ))}
         {tempTodo && (
-          <CSSTransition key={0} timeout={3000} classNames="temp-item">
+          <CSSTransition key={0} timeout={300} classNames="temp-item">
             <TodoItem
               key={0}
               todo={tempTodo}
@@ -73,7 +71,6 @@ export const TodoList: React.FC<Props> = props => {
           </CSSTransition>
         )}
       </TransitionGroup>
-      {creatingTodo && `  creating...`}
     </section>
   );
 };
