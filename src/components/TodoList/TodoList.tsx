@@ -37,9 +37,8 @@ export const TodoList: React.FC<Props> = props => {
       <TransitionGroup>
         {todos &&
           todos.map(todo => (
-            <CSSTransition key={todo.id} timeout={3000} classNames="item">
+            <CSSTransition key={todo.id} timeout={300} classNames="item">
               <TodoItem
-                key={todo.id}
                 todo={todo}
                 tempTodo={tempTodo}
                 onDelete={onDelete}
@@ -56,7 +55,6 @@ export const TodoList: React.FC<Props> = props => {
         {tempTodo && (
           <CSSTransition key={0} timeout={300} classNames="temp-item">
             <TodoItem
-              key={0}
               todo={tempTodo}
               tempTodo={tempTodo}
               onDelete={() => {}}

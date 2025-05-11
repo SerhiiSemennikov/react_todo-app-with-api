@@ -42,19 +42,15 @@ export const Header: React.FC<Props> = props => {
       setErrorMessage(ErrorMessage.Default);
     }
 
-    if (!title) {
+    if (!title.trim()) {
       setErrorMessage(ErrorMessage.EmptyTitle);
 
       return;
     }
 
-    try {
-      await onAdd(title);
-    } catch (Error) {
-      throw Error;
-    } finally {
-      setTitle('');
-    }
+    onAdd(title)
+      .then(() => setTitle(''))
+      .catch(() => {});
   }
 
   return (

@@ -25,7 +25,7 @@ async function request<T>(
     };
   }
 
-  await wait(1000);
+  await wait(100);
   const response = await fetch(BASE_URL + url, options);
 
   if (!response.ok) {

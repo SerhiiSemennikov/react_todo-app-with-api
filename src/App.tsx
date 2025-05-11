@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UserWarning } from './UserWarning';
 import { createTodo, deleteTodo, updateTodo, USER_ID } from './api/todos';
 import { getTodos } from './api/todos';
 
 import { Filter } from './types/FilterType';
-import './App.scss';
+// import './App.scss';
 import { Header } from './components/Header/Header';
 import { TodoList } from './components/TodoList/TodoList';
 import { Footer } from './components/Footer/Footer';
@@ -27,42 +27,28 @@ export const App: React.FC = () => {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const onAdd = useCallback(
-    async (title: string) => {
-      if (title.trim() === '') {
-        setErrorMessage(ErrorMessage.EmptyTitle);
+  const onAdd = (title: string) => {
+    setTempTodo({
+      id: 0,
+      title: title.trim(),
+      userId: USER_ID,
+      completed: false,
+    });
 
-        return;
-      }
+    const newTodo: Omit<Todo, 'id'> = {
+      title: title.trim(),
+      userId: USER_ID,
+      completed: false,
+    };
 
-      setTempTodo({
-        id: 0,
-        title: title.trim(),
-        userId: USER_ID,
-        completed: false,
-      });
-
-      const newTodo: Omit<Todo, 'id'> = {
-        title: title.trim(),
-        userId: USER_ID,
-        completed: false,
-      };
-
-      try {
-        const todo = await createTodo(newTodo);
-
-        setTodos(currentTodos => [...currentTodos, todo]);
-      } catch (err) {
+    return createTodo(newTodo)
+      .then(todo => setTodos(currentTodos => [...currentTodos, todo]))
+      .catch(error => {
         setErrorMessage(ErrorMessage.UnableToAdd);
-
-        throw err;
-      } finally {
-        inputRef?.current?.focus();
-        setTempTodo(null);
-      }
-    },
-    [setTodos, setTempTodo, setErrorMessage, inputRef],
-  );
+        throw error;
+      })
+      .finally(() => setTempTodo(null));
+  };
 
   const onDelete = (id: number) => {
     setIsTodoDeleting(true);
@@ -89,7 +75,7 @@ export const App: React.FC = () => {
     }
 
     const completedTodos = todos.filter(todo => todo.completed);
-    let errorOccurred = false;
+    let error = false;
 
     setIsTodoLoading(true);
 
@@ -104,7 +90,7 @@ export const App: React.FC = () => {
             );
           } catch {
             setErrorMessage(ErrorMessage.UnableToDelete);
-            errorOccurred = true;
+            error = true;
           }
         }),
       );
@@ -112,7 +98,7 @@ export const App: React.FC = () => {
       setErrorMessage(ErrorMessage.UnableToClear);
     } finally {
       setIsTodoLoading(false);
-      if (!errorOccurred) {
+      if (!error) {
         setErrorMessage(ErrorMessage.Default);
       }
 
@@ -123,15 +109,12 @@ export const App: React.FC = () => {
   useEffect(() => {
     setIsTodoLoading(true);
     getTodos()
-      .then(setTodos)
+      .then(data => setTodos(data))
       .catch(() => {
         setErrorMessage(ErrorMessage.UnableToLoad);
-        setTimeout(() => {
-          setErrorMessage(errorMessage);
-        }, 3000);
       })
       .finally(() => setIsTodoLoading(false));
-  }, [errorMessage]);
+  }, []);
 
   if (!USER_ID) {
     return <UserWarning />;

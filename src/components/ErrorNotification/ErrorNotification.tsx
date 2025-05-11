@@ -15,11 +15,15 @@ export const ErrorNotification: React.FC<Props> = props => {
       return;
     }
 
+    // if (errorMessage) {
     const timer = setTimeout(() => {
       setErrorMessage(ErrorMessage.Default);
     }, 3000);
 
     return () => clearTimeout(timer);
+    // }
+
+    return undefined;
   }, [errorMessage, setErrorMessage]);
 
   return (
